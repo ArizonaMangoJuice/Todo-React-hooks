@@ -19,7 +19,7 @@ export const SetdefaultItem = (callback) => {
             {
                 title: 'save the world',
                 id: 3,
-                done: false
+                done: true
             },
             {
                 title: 'do something else',

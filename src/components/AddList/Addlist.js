@@ -26,8 +26,10 @@ const AddList = ({user, updateFunc}) => {
     }
 
     return (
-        <div>
+        <div className='add-list-container'>
             <input 
+                className='add-list-input'
+                placeholder='Write new item and hit ENTER'
                 type='text' 
                 value={itemTitle} 
                 onChange={(e) => setItemTitle(e.target.value)} 

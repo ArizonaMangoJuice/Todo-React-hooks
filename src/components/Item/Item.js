@@ -1,25 +1,49 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
-const Item = ({title, remove, id, updateFunc, user}) => {
-    const [clicked, setClicked] = useState(false)
+const Item = ({title, remove, id, updateFunc, user, ...props}) => {
+    const [clicked, setClicked] = useState(props.done)
     const [hovered, setHovered] = useState(false)
+    const [deleteList, setDelete] = useState(false)
 
     const removeList = () => {
-        let newArr = [...user.items]
-        newArr = newArr.filter(e => e.id !== id).map((e,i) => ({...e, id: i}))
-        let newUser = {
-            ...user,
-            items: newArr
+        console.log('clicked')
+        setDelete(true)
+    }
+
+    useEffect(() => {
+            let newArr = [...user.items]
+            newArr = newArr.map(e => e.id === id ? ({...e, done: clicked}) : ({...e}))
+            let newUser = {
+                ...user,
+                items: newArr
+            }
+            localStorage.setItem('user', JSON.stringify(newUser))
+            updateFunc(true)
+    },[clicked])
+
+    useEffect(() => {
+        if(deleteList){
+            let newArr = [...user.items]
+            newArr = newArr.filter(e => e.id !== id).map((e,i) => ({...e, id: i}))
+            let newUser = {
+                ...user,
+                items: newArr
+            }
+            localStorage.setItem('user', JSON.stringify(newUser))
+            updateFunc(true)
+            setDelete(false)
         }
-        localStorage.setItem('user', JSON.stringify(newUser))
-        updateFunc(true)
+    },[deleteList])
+
+    const done = () => {
+        setClicked(!clicked)
     }
 
     return (
         <button 
             id={id}
             className='item' 
-            onClick={() => setClicked(!clicked)}
+            onClick={() => done()}
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
         >
