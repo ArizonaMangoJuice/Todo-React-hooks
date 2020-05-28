@@ -1,8 +1,19 @@
 import React, { useState } from 'react'
 
-const Item = ({title, remove, id}) => {
+const Item = ({title, remove, id, updateFunc, user}) => {
     const [clicked, setClicked] = useState(false)
     const [hovered, setHovered] = useState(false)
+
+    const removeList = () => {
+        let newArr = [...user.items]
+        newArr = newArr.filter(e => e.id !== id).map((e,i) => ({...e, id: i}))
+        let newUser = {
+            ...user,
+            items: newArr
+        }
+        localStorage.setItem('user', JSON.stringify(newUser))
+        updateFunc(true)
+    }
 
     return (
         <button 
@@ -24,7 +35,7 @@ const Item = ({title, remove, id}) => {
                     ${hovered ? 'light-purple' : ''}
                     ${clicked ? 'crossed' : ''}`
                     }>{title}</p>
-            <div  className={hovered ? 'remove fadein' : 'hidden' }>-</div>
+            <div onClick={() => removeList()}  className={hovered ? 'remove fadein' : 'hidden' }>-</div>
         </button>
     )
 }

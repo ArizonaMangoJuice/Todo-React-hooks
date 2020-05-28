@@ -30,7 +30,7 @@ const Todo = props => {
         parsedUser = JSON.parse(user)
         items = parsedUser.items.map(
             ({title, id, done}) => 
-                <Item done={done} key={id} title={title} id={id} />)
+                <Item user={parsedUser} done={done} key={id} title={title} id={id} updateFunc={setUpdated} />)
     }
 
     return (

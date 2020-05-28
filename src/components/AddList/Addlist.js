@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 const AddList = ({user, updateFunc}) => {
+    const [itemTitle, setItemTitle] = useState('')
+    
     const addList = (e) => {
         if(e.keyCode === 13){
             let newList = {
-                title: e.target.value,
+                title: itemTitle,
                 id: 0,
                 done: false
             }
@@ -16,15 +18,20 @@ const AddList = ({user, updateFunc}) => {
                 ...user, 
                 items: newArr
             } 
-           
+            
             localStorage.setItem('user', JSON.stringify(newUser))
             updateFunc(true)
+            setItemTitle('')
         }
     }
 
     return (
         <div>
-            <input type='text' onKeyDown={(e) =>  addList(e)} />
+            <input 
+                type='text' 
+                value={itemTitle} 
+                onChange={(e) => setItemTitle(e.target.value)} 
+                onKeyDown={(e) =>  addList(e)} />
         </div>
     )
 }
